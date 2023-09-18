@@ -4,10 +4,8 @@ import edu.mum.cs.cs425.demowebapps.eregistrar.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import edu.mum.cs.cs425.demowebapps.eregistrar.domain.Student;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class HomePageController {
@@ -19,30 +17,34 @@ public class HomePageController {
         return "home/index";
     }
 
-    @PostMapping(value = {"student/add"})
-    public String addNewStudent(Student student){
-        studentService.saveStudent(student);
-        return "redirect:/eregistrar/home/index";
-    }
+
 
     @GetMapping(value = {"student/new"})
     public String displayNewStudentForm(Model model){
         model.addAttribute("student", new Student());
         return "home/student/new";
     }
-
-    @GetMapping(value = {"/eregistrar/student/edit"})
-    public String displayEditStudentForm(){
-        return "student/edit";
+    @PostMapping(value = {"student/add"})
+    public String addNewStudent(Student student){
+        studentService.saveStudent(student);
+        return "redirect:/";
     }
 
-    @GetMapping(value = {"/eregistrar/student/delete"})
-    public String deleteStudent(){
-        return "student/delete";
+    @GetMapping(value = {"student/edit"})
+    public String displayEditStudentForm(@RequestParam("studentId") long studentId, Model model){
+        model.addAttribute("student", studentService.getStudentById(studentId));
+        return "home/student/edit";
     }
-
-
-
+    @PutMapping(value = {"student/update"})
+    public String editStudent(Student student){
+        studentService.updateStudent(student);
+        return "home/student/edit";
+    }
+    @PostMapping(value = {"student/delete"})
+    public String deleteStudent(@RequestParam("studentId") long studentId){
+        studentService.deleteStudent(studentId);
+        return "redirect:/";
+    }
 
     @Autowired
     public void setStudentService(StudentService studentService) {

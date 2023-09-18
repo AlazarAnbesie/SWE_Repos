@@ -42,4 +42,11 @@ public class Student {
     @NotNull(message = "This field is required")
     String isInternational;
 
+    public LocalDate getEnrollmentDate() {
+        return enrollmentDate;
+    }
+
+    public void setEnrollmentDate(LocalDate enrollmentDate) {
+        this.enrollmentDate = enrollmentDate;
+    }
 }

@@ -22,13 +22,19 @@
 
         /* Apply some basic styling to the table */
         table{
-            width: 100%;
+            width: 80%;
+            margin-left: auto;
+            margin-right: auto;
             border: 1px solid #ddd;
             margin-bottom: 20px;
             font-family: Arial, sans-serif;
             background-color: #f2f2f2;
         }
-
+        h1{
+            text-align: center;
+            color: #3498db;
+            margin-bottom: 30px;
+        }
         /* Style table headers (th) */
         th {
             background-color: #f2f2f2; /* Light gray background color */
@@ -48,7 +54,9 @@
             background-color: #f2f2f2; /* Light gray background for even rows */
         }
 
-
+        form{
+            display: inline;
+        }
 
         .navbar-brand {
             font-size: 24px;
@@ -132,6 +140,16 @@
             <th>Enrollment Date</th>
             <th>Is International</th>
             <th>Actions</th>
+            <th>
+                <form th:action="@{/student/new}" method="get">
+                    <button class="btn btn-success"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-plus-fill" viewBox="0 0 16 16">
+                        <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                        <path fill-rule="evenodd" d="M13.5 5a.5.5 0 0 1 .5.5V7h1.5a.5.5 0 0 1 0 1H14v1.5a.5.5 0 0 1-1 0V8h-1.5a.5.5 0 0 1 0-1H13V5.5a.5.5 0 0 1 .5-.5z"/>
+                    </svg>
+                    </button>
+                </form>
+
+            </th>
         </tr>
         </thead>
         <tbody>
@@ -144,8 +162,14 @@
                 <td th:text="${student.getEnrollmentDate()}"></td>
                 <td th:text="${student.getIsInternational()}"></td>
                 <td>
-                    <a href="#">Edit</a>
-                    <a href="#">Delete</a>
+                    <form th:action="@{/student/edit}" method="get">
+                        <input type="hidden" th:name="studentId" th:value="${student.studentId}" />
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                    </form>
+                    <form th:action="@{/student/delete}" method="post">
+                        <input type="hidden" th:name="studentId" th:value="${student.studentId}" />
+                        <button type="submit" class="btn btn-outline-danger">Delete</button>
+                    </form>
                 </td>
             </tr>
         </tbody>
